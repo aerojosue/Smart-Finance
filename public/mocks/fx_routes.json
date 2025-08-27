@@ -1,0 +1,14 @@
+{
+  "routes": [
+    {"base":"USD","quote":"ARS","primary":"GoogleFinance","fallbacks":["Manual"]},
+    {"base":"BRL","quote":"ARS","primary":"GoogleFinance","fallbacks":["Manual"]},
+    {"base":"USD","quote":"BRL","primary":"GoogleFinance","fallbacks":["Manual"]},
+    {"base":"BRL","quote":"USDT","primary":"Binance","fallbacks":["Manual"]},
+    {"base":"USDT","quote":"ARS","primary":"Binance","fallbacks":["Manual"]}
+  ],
+  "synthetic_rules": [
+    {"base":"BRL","quote":"ARS","path":[["BRL","USDT"],["USDT","ARS"]], "provider":"Binance"},
+    {"base":"USD","quote":"ARS","path":[["USD","USDT"],["USDT","ARS"]], "provider":"Binance"}
+  ],
+  "policy": {"use_synthetic_if_direct_unavailable": true, "snapshot_on_save": true, "ui_ttl_seconds": 60}
+}
