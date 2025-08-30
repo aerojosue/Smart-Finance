@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Calendar, Edit, Trash2, AlertCircle, Info, ToggleLeft, ToggleRight, X } from 'lucide-react';
 import type { ExpandedPlannedIncome } from '../../types/incomes';
 
