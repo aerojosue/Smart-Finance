@@ -315,6 +315,7 @@ export const IncomesModule: React.FC = () => {
               forecast={forecast} 
               selectedScenario={selectedScenario}
               displayCurrency={displayCurrency}
+              displayCurrency={displayCurrency}
             />
           </div>
         </section>

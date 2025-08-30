@@ -6,9 +6,10 @@ type Props = {
   historical: IncomeMonthlyAgg[];
   forecast: IncomeForecast;
   selectedScenario: 'conservative' | 'base' | 'optimistic';
+  displayCurrency: string;
 };
 
-export const IncomeTrendChart: React.FC<Props> = ({ historical, forecast, selectedScenario }) => {
+export const IncomeTrendChart: React.FC<Props> = ({ historical, forecast, selectedScenario, displayCurrency }) => {
   const formatCurrency = (value: number) => {
     return `ARS ${new Intl.NumberFormat('es-AR', { 
       minimumFractionDigits: 0,
