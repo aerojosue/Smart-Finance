@@ -22,6 +22,7 @@ export const IncomesModule: React.FC = () => {
   const [selectedScenario, setSelectedScenario] = useState<'conservative' | 'base' | 'optimistic'>('base');
   const [currencyFilter, setCurrencyFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [displayCurrency, setDisplayCurrency] = useState<string>('ARS');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
@@ -233,11 +234,27 @@ export const IncomesModule: React.FC = () => {
       {/* KPIs */}
       {kpis && (
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            KPIs (ARS)
-          </h2>
-          <IncomeKpiCards kpis={kpis} />
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5" />
+              KPIs ({displayCurrency})
+            </h2>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 dark:text-gray-400">Ver en:</span>
+              <select
+                value={displayCurrency}
+                onChange={(e) => setDisplayCurrency(e.target.value)}
+                className="select-field"
+              >
+                <option value="ARS">ARS (Pesos)</option>
+                <option value="USD">USD (Dólares)</option>
+                <option value="BRL">BRL (Reales)</option>
+                <option value="USDT">USDT</option>
+                <option value="EUR">EUR (Euros)</option>
+              </select>
+            </div>
+          </div>
+          <IncomeKpiCards kpis={kpis} displayCurrency={displayCurrency} />
         </section>
       )}
 
@@ -297,6 +314,7 @@ export const IncomesModule: React.FC = () => {
               historical={aggregates} 
               forecast={forecast} 
               selectedScenario={selectedScenario}
+              displayCurrency={displayCurrency}
             />
           </div>
         </section>
@@ -304,22 +322,34 @@ export const IncomesModule: React.FC = () => {
 
       {/* Comparación Plan vs Real */}
       <section>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          Plan vs Real (mes actual)
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            Plan vs Real (mes actual)
+          </h2>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Valores en {displayCurrency}
+          </div>
+        </div>
         <IncomeComparisonTable 
           comparisons={comparison} 
           month={new Date().toISOString().substring(0, 7)}
+          displayCurrency={displayCurrency}
         />
       </section>
 
       {/* Tabla de planificados próximos 90 días */}
       <section>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          Próximos 90 días
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            Próximos 90 días
+          </h2>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Equivalencias en {displayCurrency}
+          </div>
+        </div>
         <PlannedIncomesTable
           plannedIncomes={filteredExpanded}
+          displayCurrency={displayCurrency}
           onEdit={handleEditIncome}
           onDelete={handleDeleteIncome}
         />

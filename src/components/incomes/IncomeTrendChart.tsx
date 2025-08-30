@@ -69,8 +69,8 @@ export const IncomeTrendChart: React.FC<Props> = ({ historical, forecast, select
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            Tendencia de ingresos (12m + 3m forecast)
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Tendencia de ingresos (12m + 3m forecast)</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Histórico vs planificado y proyección {selectedScenario} en {displayCurrency}</p>
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Histórico vs planificado y proyección {selectedScenario}

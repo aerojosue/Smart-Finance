@@ -4,8 +4,18 @@ import type { ExpandedPlannedIncome } from '../../types/incomes';
 
 type Props = {
   plannedIncomes: ExpandedPlannedIncome[];
+  displayCurrency: string;
   onEdit: (plannedId: string) => void;
   onDelete: (plannedId: string) => void;
+};
+
+// Mock exchange rates from ARS
+const MOCK_RATES_FROM_ARS = {
+  ARS: 1,
+  USD: 1/1000, // 1000 ARS = 1 USD
+  BRL: 1/200,  // 200 ARS = 1 BRL
+  USDT: 1/1000, // 1000 ARS = 1 USDT
+  EUR: 1/1100, // 1100 ARS = 1 EUR
 };
 
 const confidenceColors = {
@@ -29,7 +39,12 @@ const categoryLabels = {
   other: 'Otro',
 };
 
-export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, onDelete }) => {
+export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCurrency, onEdit, onDelete }) => {
+  const convertFromARS = (amountARS: number, toCurrency: string): number => {
+    const rate = MOCK_RATES_FROM_ARS[toCurrency as keyof typeof MOCK_RATES_FROM_ARS] || 1;
+    return amountARS * rate;
+  };
+
   const formatCurrency = (amount: number, currency: string) => {
     return `${currency} ${new Intl.NumberFormat('es-AR').format(amount)}`;
   };
@@ -114,7 +129,7 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, o
                     </span>
                   </div>
                 </td>
-                <td className="py-3 px-2">
+                    ≈ {displayCurrency} {new Intl.NumberFormat('es-AR').format(Math.round(convertFromARS(income.amount_ars, displayCurrency)))}
                   <div>
                     <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                       {income.source}
@@ -180,13 +195,13 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, o
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
             <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-              ARS {new Intl.NumberFormat('es-AR').format(totals.planned)}
+              {displayCurrency} {new Intl.NumberFormat('es-AR').format(Math.round(convertFromARS(totals.planned, displayCurrency)))}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Total planificado</div>
           </div>
           <div>
             <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-              ARS {new Intl.NumberFormat('es-AR').format(totals.observed)}
+              {displayCurrency} {new Intl.NumberFormat('es-AR').format(Math.round(convertFromARS(totals.observed, displayCurrency)))}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Total observado</div>
           </div>
@@ -194,7 +209,7 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, o
             <div className={`text-lg font-bold ${
               totals.variance >= 0 ? 'text-green-600' : 'text-red-600'
             }`}>
-              ARS {new Intl.NumberFormat('es-AR').format(totals.variance)}
+              {displayCurrency} {new Intl.NumberFormat('es-AR').format(Math.round(convertFromARS(totals.variance, displayCurrency)))}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Diferencia</div>
           </div>

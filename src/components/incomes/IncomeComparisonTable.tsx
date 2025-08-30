@@ -5,6 +5,16 @@ import type { IncomeComparison } from '../../types/incomes';
 type Props = {
   comparisons: IncomeComparison[];
   month: string;
+  displayCurrency: string;
+};
+
+// Mock exchange rates from ARS
+const MOCK_RATES_FROM_ARS = {
+  ARS: 1,
+  USD: 1/1000, // 1000 ARS = 1 USD
+  BRL: 1/200,  // 200 ARS = 1 BRL
+  USDT: 1/1000, // 1000 ARS = 1 USDT
+  EUR: 1/1100, // 1100 ARS = 1 EUR
 };
 
 const statusIcons = {
@@ -28,9 +38,15 @@ const categoryLabels = {
   other: 'Otro',
 };
 
-export const IncomeComparisonTable: React.FC<Props> = ({ comparisons, month }) => {
+export const IncomeComparisonTable: React.FC<Props> = ({ comparisons, month, displayCurrency }) => {
+  const convertFromARS = (amountARS: number, toCurrency: string): number => {
+    const rate = MOCK_RATES_FROM_ARS[toCurrency as keyof typeof MOCK_RATES_FROM_ARS] || 1;
+    return amountARS * rate;
+  };
+
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-AR').format(Math.round(amount));
+    const convertedAmount = convertFromARS(amount, displayCurrency);
+    return new Intl.NumberFormat('es-AR').format(Math.round(convertedAmount));
   };
 
   const formatPercentage = (pct: number) => {
