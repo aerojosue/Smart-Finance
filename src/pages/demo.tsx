@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { TrendingUp, CreditCard, Wallet, Calendar, Bell, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { getDashboard, getCalendar, getInstallment } from "../lib/mockApi";
-import DeficitsList from "../components/DeficitsList";
-import Calendar90d from "../components/Calendar90d";
-import InstallmentDetail from "../components/InstallmentDetail";
-import FxForm from "../components/FxForm";
+import { DeficitsList } from "../components/DeficitsList";
+import { Calendar90d } from "../components/Calendar90d";
+import { InstallmentDetail } from "../components/InstallmentDetail";
+import { FxForm } from "../components/FxForm";
 
 export default function Dashboard() {
   const [dash, setDash] = useState<any>(null);
