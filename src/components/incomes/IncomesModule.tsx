@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, TrendingUp, Filter, BarChart3 } from 'lucide-react';
+import { Plus, TrendingUp, Filter, BarChart3, ToggleRight, Edit, Trash2 } from 'lucide-react';
 import { IncomeKpiCards } from './IncomeKpiCards';
 import { IncomeTrendChart } from './IncomeTrendChart';
 import { IncomeComparisonTable } from './IncomeComparisonTable';
@@ -8,6 +8,24 @@ import { PlannedIncomeFormModal } from './PlannedIncomeFormModal';
 import { getPlannedIncomes, getObservedIncomes, createPlannedIncome, updatePlannedIncome, deletePlannedIncome } from '../../lib/incomesApi';
 import { expandPlanned, monthlyAggregate, computeKpis, forecastSimple, generateComparison } from '../../lib/incomeCalculations';
 import type { PlannedIncome, ObservedIncome, PlannedIncomeFormData, IncomeKpis, IncomeMonthlyAgg, IncomeForecast, IncomeComparison } from '../../types/incomes';
+
+const categoryLabels = {
+  salary: 'Salario',
+  freelance: 'Freelance',
+  business: 'Negocio',
+  investment: 'Inversión',
+  rental: 'Alquiler',
+  other: 'Otro'
+};
+
+const formatCurrency = (amount: number, currency: string): string => {
+  return new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: currency === 'ARS' ? 'ARS' : 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
 
 export const IncomesModule: React.FC = () => {
   const [plannedIncomes, setPlannedIncomes] = useState<PlannedIncome[]>([]);
