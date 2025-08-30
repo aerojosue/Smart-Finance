@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { TrendingUp, CreditCard, Wallet, Calendar, Bell, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { TrendingUp, CreditCard, Wallet, Bell, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { getDashboard, getCashflow, getInstallment } from "../lib/mockApi";
 import { DeficitsList } from "../components/DeficitsList";
 import { CashflowChart } from "../components/CashflowChart";
 import { InstallmentDetail } from "../components/InstallmentDetail";
 import { FxForm } from "../components/FxForm";
 import { DarkModeToggle } from "../components/DarkModeToggle";
+import { Navigation } from "../components/Navigation";
 
 export default function Dashboard() {
   const [dash, setDash] = useState<any>(null);
   const [cashflow, setCashflow] = useState<any>(null);
   const [inst, setInst] = useState<any>(null);
   const [showFx, setShowFx] = useState(false);
+  const [activeSection, setActiveSection] = useState('dashboard');
 
   useEffect(() => {
     getDashboard().then(setDash);
@@ -21,6 +23,119 @@ export default function Dashboard() {
   const openInst = (id: string) => {
     getInstallment(id).then(setInst);
   };
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return renderDashboard();
+      case 'expenses':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Gastos</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+      case 'income':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Ingresos</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+      case 'savings':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Ahorros</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+      case 'cards':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Tarjetas</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+      case 'accounts':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Cuentas</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+      case 'conversions':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Conversiones</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+      default:
+        return renderDashboard();
+    }
+  };
+
+  const renderDashboard = () => (
+    <div className="p-6 space-y-8">
+      {/* KPIs */}
+      {dash && (
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <Wallet className="w-5 h-5" />
+            Resumen financiero
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <KPICard 
+              title="Ingresos (mes)" 
+              value={dash.kpis.income_month}
+              currency="ARS"
+              trend="up"
+              icon={<ArrowUpRight className="w-4 h-4" />}
+            />
+            <KPICard 
+              title="Gastos (mes)" 
+              value={dash.kpis.expense_month}
+              currency="ARS"
+              trend="down"
+              icon={<ArrowDownRight className="w-4 h-4" />}
+            />
+            <KPICard 
+              title="Saldo ARS" 
+              value={dash.kpis.balances_by_currency.find((x:any)=>x.currency==='ARS')?.amount}
+              currency="ARS"
+              icon={<Wallet className="w-4 h-4" />}
+            />
+            <KPICard 
+              title="Crédito BRL Itaú" 
+              value={dash.kpis.credit_available[0].available}
+              currency="BRL"
+              icon={<CreditCard className="w-4 h-4" />}
+            />
+          </div>
+        </section>
+      )}
+
+      {/* Déficits */}
+      {dash && (
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Déficits previstos
+          </h2>
+          <div className="card p-6">
+            <DeficitsList items={dash.deficits} onOpenSuggestion={openInst}/>
+          </div>
+        </section>
+      )}
+
+      {/* Gráfico de flujo de caja */}
+      {cashflow && (
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Flujo de caja mensual
+          </h2>
+          <div className="card p-6">
+            <CashflowChart data={cashflow.daily_flow} currency={cashflow.currency} />
+          </div>
+        </section>
+      )}
+
+      {/* Detalle cuota + FX */}
+      {inst && (
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card p-6">
+            <InstallmentDetail 
+              data={inst} 
+              onGenerateFx={()=>setShowFx(true)} 
+              onMarkPaid={()=>alert('Abrir modal de pago (stub)')} 
+            />
+          </div>
+          {showFx && (
+            <div className="card p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Generar conversión</h3>
+              <FxForm 
+                defaultFromCurrency="USDT" 
+                defaultToCurrency="BRL" 
+                defaultToAmount={inst?.deficit?.amount || '0.00'} 
+                onSave={()=>alert('FX guardada (mock)')} 
+              />
+            </div>
+          )}
+        </section>
+      )}
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
@@ -44,95 +159,11 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="p-6 space-y-8">
-        {/* KPIs */}
-        {dash && (
-          <section>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-              <Wallet className="w-5 h-5" />
-              Resumen financiero
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <KPICard 
-                title="Ingresos (mes)" 
-                value={dash.kpis.income_month}
-                currency="ARS"
-                trend="up"
-                icon={<ArrowUpRight className="w-4 h-4" />}
-              />
-              <KPICard 
-                title="Gastos (mes)" 
-                value={dash.kpis.expense_month}
-                currency="ARS"
-                trend="down"
-                icon={<ArrowDownRight className="w-4 h-4" />}
-              />
-              <KPICard 
-                title="Saldo ARS" 
-                value={dash.kpis.balances_by_currency.find((x:any)=>x.currency==='ARS')?.amount}
-                currency="ARS"
-                icon={<Wallet className="w-4 h-4" />}
-              />
-              <KPICard 
-                title="Crédito BRL Itaú" 
-                value={dash.kpis.credit_available[0].available}
-                currency="BRL"
-                icon={<CreditCard className="w-4 h-4" />}
-              />
-            </div>
-          </section>
-        )}
+      {/* Navigation Menu */}
+      <Navigation activeSection={activeSection} onSectionChange={setActiveSection} />
 
-        {/* Déficits */}
-        {dash && (
-          <section>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              Déficits previstos
-            </h2>
-            <div className="card p-6">
-              <DeficitsList items={dash.deficits} onOpenSuggestion={openInst}/>
-            </div>
-          </section>
-        )}
-
-        {/* Gráfico de flujo de caja */}
-        {cashflow && (
-          <section>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" />
-              Flujo de caja mensual
-            </h2>
-            <div className="card p-6">
-              <CashflowChart data={cashflow.daily_flow} currency={cashflow.currency} />
-            </div>
-          </section>
-        )}
-
-        {/* Detalle cuota + FX */}
-        {inst && (
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="card p-6">
-              <InstallmentDetail 
-                data={inst} 
-                onGenerateFx={()=>setShowFx(true)} 
-                onMarkPaid={()=>alert('Abrir modal de pago (stub)')} 
-              />
-            </div>
-            {showFx && (
-              <div className="card p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Generar conversión</h3>
-                <FxForm 
-                  defaultFromCurrency="USDT" 
-                  defaultToCurrency="BRL" 
-                  defaultToAmount={inst?.deficit?.amount || '0.00'} 
-                  onSave={()=>alert('FX guardada (mock)')} 
-                />
-              </div>
-            )}
-          </section>
-        )}
-      </div>
+      {/* Main Content */}
+      {renderContent()}
     </div>
   );
 }
