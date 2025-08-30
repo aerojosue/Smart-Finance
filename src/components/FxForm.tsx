@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { ArrowRight, Calculator, Zap } from 'lucide-react';
 
 type Props = {
   defaultFromCurrency?: string;
@@ -18,61 +19,97 @@ export const FxForm: React.FC<Props> = ({ defaultFromCurrency='USDT', defaultToC
   const effectiveRate = useMemo(()=> quotedRate, [quotedRate]);
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-3">
-        <div className="border rounded p-3">
-          <div className="font-medium mb-2">From</div>
-          <div className="flex gap-2">
-            <select className="border rounded px-2 py-1" value={fromCurrency} onChange={e=>setFromCurrency(e.target.value)}>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border border-gray-200 rounded-lg p-4">
+          <div className="font-medium mb-3 flex items-center gap-2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            Desde
+          </div>
+          <div className="space-y-2">
+            <select className="select-field w-full" value={fromCurrency} onChange={e=>setFromCurrency(e.target.value)}>
               {['ARS','BRL','USD','USDT'].map(c=> <option key={c}>{c}</option>)}
             </select>
-            <input className="border rounded px-2 py-1 w-full" placeholder="Monto" />
+            <input className="input-field w-full" placeholder="Monto a convertir" />
           </div>
         </div>
-        <div className="border rounded p-3">
-          <div className="font-medium mb-2">To</div>
-          <div className="flex gap-2">
-            <select className="border rounded px-2 py-1" value={toCurrency} onChange={e=>setToCurrency(e.target.value)}>
+        
+        <div className="flex items-center justify-center md:hidden">
+          <ArrowRight className="w-5 h-5 text-gray-400" />
+        </div>
+        
+        <div className="border border-gray-200 rounded-lg p-4">
+          <div className="font-medium mb-3 flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            Hacia
+          </div>
+          <div className="space-y-2">
+            <select className="select-field w-full" value={toCurrency} onChange={e=>setToCurrency(e.target.value)}>
               {['ARS','BRL','USD','USDT'].map(c=> <option key={c}>{c}</option>)}
             </select>
-            <input className="border rounded px-2 py-1 w-full" value={toAmount} onChange={e=>setToAmount(e.target.value)} />
+            <input className="input-field w-full" value={toAmount} onChange={e=>setToAmount(e.target.value)} placeholder="Monto necesario" />
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="border rounded p-3 space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="text-sm">Proveedor sugerido</label>
-            <select className="border rounded px-2 py-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border border-gray-200 rounded-lg p-4 space-y-4">
+          <div className="font-medium flex items-center gap-2">
+            <Zap className="w-4 h-4" />
+            Configuración
+          </div>
+          <div className="space-y-3">
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1">Proveedor sugerido</label>
+              <select className="select-field w-full">
               <option>Binance</option>
               <option>GoogleFinance</option>
               <option>Manual</option>
             </select>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-sm">Quoted rate</label>
-            <input className="border rounded px-2 py-1" value={quotedRate} onChange={e=>setQuotedRate(e.target.value)} />
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-sm">Fees</label>
-            <input className="border rounded px-2 py-1" value={fees} onChange={e=>setFees(e.target.value)} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1">Tasa cotizada</label>
+              <input className="input-field w-full" value={quotedRate} onChange={e=>setQuotedRate(e.target.value)} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1">Comisiones</label>
+              <input className="input-field w-full" value={fees} onChange={e=>setFees(e.target.value)} />
+            </div>
           </div>
         </div>
-        <div className="border rounded p-3">
-          <div className="font-medium mb-2">Vista previa</div>
-          <div className="text-sm">Effective rate: {effectiveRate}</div>
-          <div className="text-sm">Spread: calcular al guardar</div>
-          <div className="flex items-center justify-between mt-2">
-            <label className="text-sm">Plataforma</label>
-            <input className="border rounded px-2 py-1" value={platform} onChange={e=>setPlatform(e.target.value)} />
+        
+        <div className="border border-gray-200 rounded-lg p-4">
+          <div className="font-medium mb-3 flex items-center gap-2">
+            <Calculator className="w-4 h-4" />
+            Vista previa
+          </div>
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-lg p-3">
+              <div className="text-sm text-gray-600">Tasa efectiva</div>
+              <div className="text-lg font-semibold">{effectiveRate}</div>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <div className="text-sm text-gray-600">Spread</div>
+              <div className="text-sm text-gray-500">Se calculará al guardar</div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1">Plataforma</label>
+              <input className="input-field w-full" value={platform} onChange={e=>setPlatform(e.target.value)} />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <button className="px-3 py-2 border rounded" onClick={()=>onSave?.({fromCurrency,toCurrency,toAmount,quotedRate,fees,platform})}>Guardar</button>
-        <button className="px-3 py-2 border rounded">Usar en cuota</button>
+      <div className="flex gap-3">
+        <button 
+          className="btn-primary flex-1" 
+          onClick={()=>onSave?.({fromCurrency,toCurrency,toAmount,quotedRate,fees,platform})}
+        >
+          Guardar conversión
+        </button>
+        <button className="btn-secondary">
+          Usar en cuota
+        </button>
       </div>
     </div>
   );

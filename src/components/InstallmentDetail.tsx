@@ -1,4 +1,5 @@
 import React from 'react';
+import { CreditCard, AlertCircle, Calendar, DollarSign } from 'lucide-react';
 import type { Installment } from '../types';
 
 type Props = { data: Installment; onGenerateFx?: ()=>void; onMarkPaid?: ()=>void };
@@ -12,35 +13,76 @@ const badgeClass = (s: string) =>
 
 export const InstallmentDetail: React.FC<Props> = ({ data, onGenerateFx, onMarkPaid }) => {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Cuota {data.n} — {data.currency} {data.amount_base}</h2>
-          <div className="text-sm text-gray-600">Vence: {data.due_date} · Estado: <span className={`text-xs px-2 py-1 rounded ${badgeClass(data.status)}`}>{data.status}</span></div>
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <CreditCard className="w-5 h-5" />
+            Cuota {data.n}
+          </h2>
+          <div className="mt-2 space-y-1">
+            <div className="text-2xl font-bold text-gray-900">
+              {data.currency} {new Intl.NumberFormat('es-AR').format(parseFloat(data.amount_base))}
+            </div>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                Vence: {data.due_date}
+              </div>
+              <span className={`px-2 py-1 rounded text-xs font-medium ${badgeClass(data.status)}`}>
+                {data.status}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="border rounded p-3">
-        <div className="font-medium mb-1">Sugerencias de cobertura</div>
+      {data.deficit && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <AlertCircle className="w-4 h-4 text-red-600" />
+            <span className="font-medium text-red-900">Déficit detectado</span>
+          </div>
+          <div className="text-red-800">
+            Faltan {data.deficit.currency} {new Intl.NumberFormat('es-AR').format(parseFloat(data.deficit.amount))}
+          </div>
+        </div>
+      )}
+
+      <div className="border border-gray-200 rounded-lg p-4">
+        <div className="font-medium mb-3 flex items-center gap-2">
+          <DollarSign className="w-4 h-4" />
+          Sugerencias de cobertura
+        </div>
         {data.deficit ? (
-          <div className="text-sm mb-2">Déficit: {data.deficit.currency} {data.deficit.amount}</div>
-        ) : <div className="text-sm text-gray-500">Sin déficit previsto</div>}
+          <>
         <div className="space-y-2">
           {data.suggestions?.map((s, idx)=> (
-            <div key={idx} className="flex items-center justify-between text-sm border rounded p-2">
+            <div key={idx} className="flex items-center justify-between text-sm border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
               <div>
-                <div>{s.from_currency} → {data.currency} · {s.est_rate} {s.est_spread_pct ? `· spread ${s.est_spread_pct}%` : ''}</div>
+                <div className="font-medium">{s.from_currency} → {data.currency}</div>
+                <div className="text-gray-600">{s.est_rate} {s.est_spread_pct ? `· spread ${s.est_spread_pct}%` : ''}</div>
                 {s.platform_suggested && <div className="text-gray-500">Plataforma: {s.platform_suggested}</div>}
               </div>
-              <button className="px-3 py-1 border rounded" onClick={onGenerateFx}>Generar conversión</button>
+              <button className="btn-primary text-sm" onClick={onGenerateFx}>
+                Generar
+              </button>
             </div>
           ))}
         </div>
+          </>
+        ) : (
+          <div className="text-sm text-gray-500 text-center py-4">Sin déficit previsto</div>
+        )}
       </div>
 
       <div className="flex gap-2">
-        <button className="px-3 py-2 border rounded" onClick={onGenerateFx}>Generar conversión</button>
-        <button className="px-3 py-2 border rounded" onClick={onMarkPaid}>Marcar pagada</button>
+        <button className="btn-primary" onClick={onGenerateFx}>
+          Generar conversión
+        </button>
+        <button className="btn-secondary" onClick={onMarkPaid}>
+          Marcar como pagada
+        </button>
       </div>
     </div>
   );
