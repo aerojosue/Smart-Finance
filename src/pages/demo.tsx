@@ -31,6 +31,8 @@ export default function Dashboard() {
     switch (activeSection) {
       case 'dashboard':
         return renderDashboard();
+      case 'movements':
+        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Movimientos</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Registro unificado de ingresos, gastos, transferencias, pagos y ahorros. Próximamente...</p></div>;
       case 'expenses':
         return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Gastos</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
       case 'income':

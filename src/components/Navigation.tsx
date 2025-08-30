@@ -6,7 +6,8 @@ import {
   PiggyBank, 
   CreditCard, 
   Wallet, 
-  ArrowLeftRight 
+  ArrowLeftRight,
+  ArrowUpDown
 } from 'lucide-react';
 
 type NavigationItem = {
@@ -22,6 +23,7 @@ type Props = {
 
 const navigationItems: NavigationItem[] = [
   { id: 'dashboard', label: 'Home', icon: <Home className="w-5 h-5" /> },
+  { id: 'movements', label: 'Movimientos', icon: <ArrowUpDown className="w-5 h-5" /> },
   { id: 'expenses', label: 'Gastos', icon: <ShoppingCart className="w-5 h-5" /> },
   { id: 'income', label: 'Ingresos', icon: <TrendingUp className="w-5 h-5" /> },
   { id: 'savings', label: 'Ahorros', icon: <PiggyBank className="w-5 h-5" /> },
