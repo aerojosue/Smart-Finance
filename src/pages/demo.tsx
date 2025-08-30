@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { TrendingUp, CreditCard, Wallet, Calendar, Bell, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { getDashboard, getCalendar, getInstallment } from "../lib/mockApi";
+import { getDashboard, getCashflow, getInstallment } from "../lib/mockApi";
 import { DeficitsList } from "../components/DeficitsList";
-import { Calendar90d } from "../components/Calendar90d";
+import { CashflowChart } from "../components/CashflowChart";
 import { InstallmentDetail } from "../components/InstallmentDetail";
 import { FxForm } from "../components/FxForm";
 
 export default function Dashboard() {
   const [dash, setDash] = useState<any>(null);
-  const [cal, setCal] = useState<any>(null);
+  const [cashflow, setCashflow] = useState<any>(null);
   const [inst, setInst] = useState<any>(null);
   const [showFx, setShowFx] = useState(false);
 
   useEffect(() => {
     getDashboard().then(setDash);
-    getCalendar().then(setCal);
+    getCashflow().then(setCashflow);
   }, []);
 
   const openInst = (id: string) => {
@@ -94,15 +94,15 @@ export default function Dashboard() {
           </section>
         )}
 
-        {/* Calendario */}
-        {cal && (
+        {/* Gráfico de flujo de caja */}
+        {cashflow && (
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              Calendario 90 días
+              <TrendingUp className="w-5 h-5" />
+              Flujo de caja mensual
             </h2>
             <div className="card p-6">
-              <Calendar90d days={cal.days} onSelectDay={(date)=>console.log('day',date)} />
+              <CashflowChart data={cashflow.daily_flow} currency={cashflow.currency} />
             </div>
           </section>
         )}

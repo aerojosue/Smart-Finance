@@ -10,6 +10,12 @@ export async function getCalendar() {
   return r.json();
 }
 
+export async function getCashflow() {
+  const r = await fetch('/mocks/cashflow.json');
+  if (!r.ok) throw new Error('cashflow mock not found');
+  return r.json();
+}
+
 export async function getInstallment(id: string) {
   // para inst_1 => /mocks/installment_inst1.json
   const r = await fetch(`/mocks/installment_${id}.json`);
