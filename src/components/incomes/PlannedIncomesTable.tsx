@@ -311,12 +311,14 @@ export const PlannedIncomesTable: React.FC<Props> = ({
               </div>
               <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
+                  type="button"
                   onClick={handleCancelEdit}
                   className="btn-secondary flex-1"
                 >
                   Cancelar
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleSaveAmount('fromDate')}
                   className="btn-primary flex-1"
                   disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
@@ -325,12 +327,13 @@ export const PlannedIncomesTable: React.FC<Props> = ({
                 </button>
                 <button
                   onClick={() => handleSaveAmount('specific')}
-                  className="btn-primary flex-1"
+                  className="btn-secondary flex-1"
                   disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
                 >
-                  Actualizar este y los siguientes
+                  Esta y siguientes
                 </button>
               </div>
+                  type="button"
             </div>
           </div>
         </div>
