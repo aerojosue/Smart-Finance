@@ -79,10 +79,10 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCu
     return (
       <div className="card p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          Ingresos planificados (próximos 90 días)
+          Ingresos planificados
         </h3>
         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-          No hay ingresos planificados en los próximos 90 días
+          No hay ingresos planificados activos
         </div>
       </div>
     );
@@ -91,7 +91,7 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCu
   return (
     <div className="card p-6">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
-        Ingresos planificados (próximos 90 días)
+        Ingresos planificados
       </h3>
 
       <div className="overflow-x-auto">

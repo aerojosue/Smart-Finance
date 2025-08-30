@@ -183,12 +183,12 @@ export const IncomesModule: React.FC = () => {
   };
 
   // Get expanded planned for next 90 days
-  const next90Days = new Date();
-  next90Days.setDate(next90Days.getDate() + 90);
+  const next12Months = new Date();
+  next12Months.setMonth(next12Months.getMonth() + 12);
   const expandedNext90 = expandPlanned(
     plannedIncomes,
     new Date().toISOString().split('T')[0],
-    next90Days.toISOString().split('T')[0]
+    next12Months.toISOString().split('T')[0]
   );
 
   // Apply filters
@@ -342,7 +342,7 @@ export const IncomesModule: React.FC = () => {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            Próximos 90 días
+            Todos los ingresos planificados
           </h2>
           <div className="text-sm text-gray-600 dark:text-gray-400">
             Equivalencias en {displayCurrency}
