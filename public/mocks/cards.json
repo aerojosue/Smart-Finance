@@ -1,0 +1,73 @@
+{
+  "cards": [
+    {
+      "id": "card_brl_itau",
+      "name": "BRL Itaú",
+      "brand": "Visa",
+      "type": "credit",
+      "country": "BR",
+      "multimoneda": false,
+      "currencies": ["BRL"],
+      "limit_by_currency": {"BRL":"5000.00"},
+      "cutoff_day": 20,
+      "payment_day": 29,
+      "business_day_policy": "next_business_day",
+      "color": "#3b82f6",
+      "last4": "4312",
+      "fx_settlement_policy": "at_payment",
+      "created_at": "2025-08-01T10:00:00Z",
+      "updated_at": "2025-08-12T18:00:00Z"
+    },
+    {
+      "id": "card_usd_santander",
+      "name": "USD Santander",
+      "brand": "Mastercard",
+      "type": "credit",
+      "country": "AR",
+      "multimoneda": false,
+      "currencies": ["USD"],
+      "limit_by_currency": {"USD":"1500.00"},
+      "cutoff_day": 25,
+      "payment_day": 10,
+      "business_day_policy": "next_business_day",
+      "color": "#f97316",
+      "last4": "8891",
+      "fx_settlement_policy": "at_payment",
+      "created_at": "2025-08-02T11:00:00Z",
+      "updated_at": "2025-08-16T09:00:00Z"
+    },
+    {
+      "id": "card_dual_usd_brl",
+      "name": "Dual USD/BRL",
+      "brand": "Amex",
+      "type": "credit",
+      "country": "BR",
+      "multimoneda": true,
+      "currencies": ["USD","BRL"],
+      "limit_by_currency": {"USD":"1000.00","BRL":"3000.00"},
+      "cutoff_day": 15,
+      "payment_day": 5,
+      "business_day_policy": "next_business_day",
+      "color": "#a78bfa",
+      "last4": "1207",
+      "fx_settlement_policy": "at_payment",
+      "created_at": "2025-08-03T09:00:00Z",
+      "updated_at": "2025-08-17T12:00:00Z"
+    },
+    {
+      "id": "card_debit_ars",
+      "name": "Débito ARS",
+      "brand": "Visa",
+      "type": "debit",
+      "country": "AR",
+      "multimoneda": false,
+      "currencies": ["ARS"],
+      "business_day_policy": "next_business_day",
+      "color": "#10b981",
+      "last4": "0042",
+      "fx_settlement_policy": "at_payment",
+      "created_at": "2025-08-05T08:00:00Z",
+      "updated_at": "2025-08-18T08:00:00Z"
+    }
+  ]
+}
