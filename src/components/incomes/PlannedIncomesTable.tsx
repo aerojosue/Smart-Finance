@@ -317,18 +317,18 @@ export const PlannedIncomesTable: React.FC<Props> = ({
                   Cancelar
                 </button>
                 <button
-                  onClick={() => handleSaveAmount('specific')}
-                  className="btn-secondary flex-1"
-                  disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
-                >
-                  Solo esta fecha
-                </button>
-                <button
                   onClick={() => handleSaveAmount('fromDate')}
                   className="btn-primary flex-1"
                   disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
                 >
-                  Esta y siguientes
+                  Actualizar ingreso
+                </button>
+                <button
+                  onClick={() => handleSaveAmount('specific')}
+                  className="btn-primary flex-1"
+                  disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
+                >
+                  Actualizar este y los siguientes
                 </button>
               </div>
             </div>
