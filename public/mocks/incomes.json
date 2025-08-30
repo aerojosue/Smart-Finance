@@ -1,0 +1,138 @@
+{
+  "planned": [
+    {
+      "id": "plan_salary_ars",
+      "source": "Salario principal",
+      "category": "salary",
+      "currency": "ARS",
+      "amount": "1250000.00",
+      "confidence": "high",
+      "recurrence": {
+        "type": "monthly",
+        "day_rule": "last_business_day"
+      },
+      "variable_band": null,
+      "notes": "Salario fijo mensual",
+      "created_at": "2025-01-01T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z"
+    },
+    {
+      "id": "plan_freelance_usd",
+      "source": "Freelance desarrollo",
+      "category": "freelance",
+      "currency": "USD",
+      "amount": null,
+      "confidence": "medium",
+      "recurrence": {
+        "type": "monthly",
+        "day_rule": "next_business_day",
+        "anchor_day": 15
+      },
+      "variable_band": {
+        "min": "800.00",
+        "max": "2000.00"
+      },
+      "notes": "Proyectos variables",
+      "created_at": "2025-02-01T10:00:00Z",
+      "updated_at": "2025-08-15T10:00:00Z"
+    },
+    {
+      "id": "plan_rental_brl",
+      "source": "Alquiler Brasil",
+      "category": "rental",
+      "currency": "BRL",
+      "amount": "1500.00",
+      "confidence": "high",
+      "recurrence": {
+        "type": "monthly",
+        "day_rule": "fixed_day",
+        "anchor_day": 5
+      },
+      "variable_band": null,
+      "notes": "Alquiler departamento São Paulo",
+      "created_at": "2025-03-01T10:00:00Z",
+      "updated_at": "2025-08-05T10:00:00Z"
+    },
+    {
+      "id": "plan_bonus_ars",
+      "source": "Bonus anual",
+      "category": "bonus",
+      "currency": "ARS",
+      "amount": "2500000.00",
+      "confidence": "medium",
+      "recurrence": null,
+      "variable_band": null,
+      "notes": "Aguinaldo diciembre",
+      "created_at": "2025-08-01T10:00:00Z",
+      "updated_at": "2025-08-01T10:00:00Z"
+    }
+  ],
+  "observed": [
+    {
+      "id": "obs_001",
+      "source": "Salario principal",
+      "category": "salary",
+      "currency": "ARS",
+      "amount": "1250000.00",
+      "date": "2025-08-30",
+      "account_id": "acc_bank_ars",
+      "planned_id": "plan_salary_ars",
+      "created_at": "2025-08-30T15:00:00Z"
+    },
+    {
+      "id": "obs_002",
+      "source": "Freelance desarrollo",
+      "category": "freelance",
+      "currency": "USD",
+      "amount": "1200.00",
+      "date": "2025-08-15",
+      "account_id": "acc_ew_usd_ars",
+      "planned_id": "plan_freelance_usd",
+      "created_at": "2025-08-15T12:00:00Z"
+    },
+    {
+      "id": "obs_003",
+      "source": "Alquiler Brasil",
+      "category": "rental",
+      "currency": "BRL",
+      "amount": "1500.00",
+      "date": "2025-08-05",
+      "account_id": "acc_bank_brl",
+      "planned_id": "plan_rental_brl",
+      "created_at": "2025-08-05T10:00:00Z"
+    },
+    {
+      "id": "obs_004",
+      "source": "Salario principal",
+      "category": "salary",
+      "currency": "ARS",
+      "amount": "1250000.00",
+      "date": "2025-07-31",
+      "account_id": "acc_bank_ars",
+      "planned_id": "plan_salary_ars",
+      "created_at": "2025-07-31T15:00:00Z"
+    },
+    {
+      "id": "obs_005",
+      "source": "Freelance desarrollo",
+      "category": "freelance",
+      "currency": "USD",
+      "amount": "950.00",
+      "date": "2025-07-15",
+      "account_id": "acc_ew_usd_ars",
+      "planned_id": "plan_freelance_usd",
+      "created_at": "2025-07-15T12:00:00Z"
+    },
+    {
+      "id": "obs_006",
+      "source": "Alquiler Brasil",
+      "category": "rental",
+      "currency": "BRL",
+      "amount": "1500.00",
+      "date": "2025-07-05",
+      "account_id": "acc_bank_brl",
+      "planned_id": "plan_rental_brl",
+      "created_at": "2025-07-05T10:00:00Z"
+    }
+  ]
+}

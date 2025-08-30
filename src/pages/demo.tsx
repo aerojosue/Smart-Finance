@@ -10,6 +10,7 @@ import { Navigation } from "../components/Navigation";
 import { AccountsModule } from "../components/accounts/AccountsModule";
 import { CardsModule } from "../components/cards/CardsModule";
 import { SavingsModule } from "../components/savings/SavingsModule";
+import { IncomesModule } from "../components/incomes/IncomesModule";
 
 export default function Dashboard() {
   const [dash, setDash] = useState<any>(null);
@@ -36,7 +37,7 @@ export default function Dashboard() {
       case 'expenses':
         return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Gastos</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
       case 'income':
-        return <div className="p-6"><h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Módulo de Ingresos</h2><p className="text-gray-600 dark:text-gray-400 mt-2">Próximamente...</p></div>;
+        return <IncomesModule />;
       case 'savings':
         return <SavingsModule />;
       case 'cards':
