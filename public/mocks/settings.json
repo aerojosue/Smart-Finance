@@ -1,0 +1,24 @@
+{
+  "projection": {
+    "horizon_days": 90,
+    "window_anchor": "month_start",
+    "recompute": {
+      "on_change": true,
+      "nightly_batch": "02:00"
+    }
+  },
+  "notifications": {
+    "channels": ["in_app"],
+    "digest_daily": true,
+    "digest_time": "09:00",
+    "quiet_hours": { "start": "22:00", "end": "07:00" },
+    "lead_days": [7, 3, 1]
+  },
+  "primary_report_currency": "ARS",
+  "suggestion_strategy": "same_currency_first_then_min_cost",
+  "ui": {
+    "theme": "light",
+    "locale": "es-AR",
+    "currency_format_decimals": 2
+  }
+}
