@@ -5,6 +5,7 @@ import { DeficitsList } from "../components/DeficitsList";
 import { CashflowChart } from "../components/CashflowChart";
 import { InstallmentDetail } from "../components/InstallmentDetail";
 import { FxForm } from "../components/FxForm";
+import { DarkModeToggle } from "../components/DarkModeToggle";
 
 export default function Dashboard() {
   const [dash, setDash] = useState<any>(null);
@@ -22,22 +23,23 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 transition-colors duration-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900">Smart Finance</h1>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Smart Finance</h1>
           </div>
           <div className="flex items-center gap-4">
-            <button className="relative p-2 text-gray-500 hover:text-gray-700">
+            <DarkModeToggle />
+            <button className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200">
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
-            <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+            <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
           </div>
         </div>
       </header>
@@ -46,7 +48,7 @@ export default function Dashboard() {
         {/* KPIs */}
         {dash && (
           <section>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
               <Wallet className="w-5 h-5" />
               Resumen financiero
             </h2>
@@ -84,7 +86,7 @@ export default function Dashboard() {
         {/* Déficits */}
         {dash && (
           <section>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               Déficits previstos
             </h2>
@@ -97,7 +99,7 @@ export default function Dashboard() {
         {/* Gráfico de flujo de caja */}
         {cashflow && (
           <section>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               Flujo de caja mensual
             </h2>
@@ -119,7 +121,7 @@ export default function Dashboard() {
             </div>
             {showFx && (
               <div className="card p-6">
-                <h3 className="text-lg font-semibold mb-4">Generar conversión</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Generar conversión</h3>
                 <FxForm 
                   defaultFromCurrency="USDT" 
                   defaultToCurrency="BRL" 
@@ -150,13 +152,13 @@ function KPICard({title, value, currency, trend, icon}: {
   return (
     <div className="card p-4 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-2">
-        <div className="text-sm text-gray-600">{title}</div>
+        <div className="text-sm text-gray-600 dark:text-gray-400">{title}</div>
         <div className={`p-1 rounded ${trend === 'up' ? 'text-green-600 bg-green-50' : trend === 'down' ? 'text-red-600 bg-red-50' : 'text-gray-600 bg-gray-50'}`}>
           {icon}
         </div>
       </div>
-      <div className="text-xl font-bold text-gray-900">
-        {currency && <span className="text-sm font-normal text-gray-500 mr-1">{currency}</span>}
+      <div className="text-xl font-bold text-gray-900 dark:text-gray-100">
+        {currency && <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mr-1">{currency}</span>}
         {formatValue(value)}
       </div>
     </div>

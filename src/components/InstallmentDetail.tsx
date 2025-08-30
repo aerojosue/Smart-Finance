@@ -16,15 +16,15 @@ export const InstallmentDetail: React.FC<Props> = ({ data, onGenerateFx, onMarkP
     <div className="space-y-6">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <CreditCard className="w-5 h-5" />
             Cuota {data.n}
           </h2>
           <div className="mt-2 space-y-1">
-            <div className="text-2xl font-bold text-gray-900">
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {data.currency} {new Intl.NumberFormat('es-AR').format(parseFloat(data.amount_base))}
             </div>
-            <div className="flex items-center gap-4 text-sm text-gray-600">
+            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 Vence: {data.due_date}
@@ -38,19 +38,19 @@ export const InstallmentDetail: React.FC<Props> = ({ data, onGenerateFx, onMarkP
       </div>
 
       {data.deficit && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <AlertCircle className="w-4 h-4 text-red-600" />
-            <span className="font-medium text-red-900">Déficit detectado</span>
+            <span className="font-medium text-red-900 dark:text-red-100">Déficit detectado</span>
           </div>
-          <div className="text-red-800">
+          <div className="text-red-800 dark:text-red-200">
             Faltan {data.deficit.currency} {new Intl.NumberFormat('es-AR').format(parseFloat(data.deficit.amount))}
           </div>
         </div>
       )}
 
-      <div className="border border-gray-200 rounded-lg p-4">
-        <div className="font-medium mb-3 flex items-center gap-2">
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
+        <div className="font-medium text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
           <DollarSign className="w-4 h-4" />
           Sugerencias de cobertura
         </div>
@@ -58,11 +58,11 @@ export const InstallmentDetail: React.FC<Props> = ({ data, onGenerateFx, onMarkP
           <>
         <div className="space-y-2">
           {data.suggestions?.map((s, idx)=> (
-            <div key={idx} className="flex items-center justify-between text-sm border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
+            <div key={idx} className="flex items-center justify-between text-sm border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 bg-white dark:bg-gray-800">
               <div>
-                <div className="font-medium">{s.from_currency} → {data.currency}</div>
-                <div className="text-gray-600">{s.est_rate} {s.est_spread_pct ? `· spread ${s.est_spread_pct}%` : ''}</div>
-                {s.platform_suggested && <div className="text-gray-500">Plataforma: {s.platform_suggested}</div>}
+                <div className="font-medium text-gray-900 dark:text-gray-100">{s.from_currency} → {data.currency}</div>
+                <div className="text-gray-600 dark:text-gray-400">{s.est_rate} {s.est_spread_pct ? `· spread ${s.est_spread_pct}%` : ''}</div>
+                {s.platform_suggested && <div className="text-gray-500 dark:text-gray-500">Plataforma: {s.platform_suggested}</div>}
               </div>
               <button className="btn-primary text-sm" onClick={onGenerateFx}>
                 Generar
@@ -72,7 +72,7 @@ export const InstallmentDetail: React.FC<Props> = ({ data, onGenerateFx, onMarkP
         </div>
           </>
         ) : (
-          <div className="text-sm text-gray-500 text-center py-4">Sin déficit previsto</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">Sin déficit previsto</div>
         )}
       </div>
 

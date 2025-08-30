@@ -39,8 +39,8 @@ export const CashflowChart: React.FC<Props> = ({ data, currency }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900 mb-2">Día {label}</p>
+        <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+          <p className="font-medium text-gray-900 dark:text-gray-100 mb-2">Día {label}</p>
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-sm">
               <TrendingUp className="w-3 h-3 text-green-600" />
@@ -51,7 +51,7 @@ export const CashflowChart: React.FC<Props> = ({ data, currency }) => {
               <span className="text-red-600">Gastos: {formatCurrency(data.expenses)}</span>
             </div>
             <div className="flex items-center gap-2 text-sm font-medium pt-1 border-t">
-              <span className="text-gray-900">Saldo: {formatCurrency(data.cumulative)}</span>
+              <span className="text-gray-900 dark:text-gray-100">Saldo: {formatCurrency(data.cumulative)}</span>
             </div>
           </div>
         </div>
@@ -68,21 +68,21 @@ export const CashflowChart: React.FC<Props> = ({ data, currency }) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Flujo de caja - Septiembre 2025</h3>
-          <p className="text-sm text-gray-600">Evolución diaria del saldo en {currency}</p>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Flujo de caja - Septiembre 2025</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Evolución diaria del saldo en {currency}</p>
         </div>
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span className="text-gray-600">Saldo acumulado</span>
+            <span className="text-gray-600 dark:text-gray-400">Saldo acumulado</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span className="text-gray-600">Ingresos</span>
+            <span className="text-gray-600 dark:text-gray-400">Ingresos</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span className="text-gray-600">Gastos</span>
+            <span className="text-gray-600 dark:text-gray-400">Gastos</span>
           </div>
         </div>
       </div>
@@ -107,13 +107,15 @@ export const CashflowChart: React.FC<Props> = ({ data, currency }) => {
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis 
               dataKey="day" 
-              stroke="#64748b"
+              stroke="currentColor"
+              className="text-gray-500 dark:text-gray-400"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis 
-              stroke="#64748b"
+              stroke="currentColor"
+              className="text-gray-500 dark:text-gray-400"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -157,22 +159,22 @@ export const CashflowChart: React.FC<Props> = ({ data, currency }) => {
       
       <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {formatCurrency(data.reduce((sum, d) => sum + d.income, 0))}
           </div>
-          <div className="text-sm text-gray-600">Total ingresos</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">Total ingresos</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {formatCurrency(data.reduce((sum, d) => sum + d.expenses, 0))}
           </div>
-          <div className="text-sm text-gray-600">Total gastos</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">Total gastos</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {formatCurrency(data[data.length - 1]?.cumulative || 0)}
           </div>
-          <div className="text-sm text-gray-600">Saldo final</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">Saldo final</div>
         </div>
       </div>
     </div>
