@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Edit, Trash2, AlertCircle, Info, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Calendar, Edit, Trash2, AlertCircle, Info, ToggleLeft, ToggleRight, X } from 'lucide-react';
 import type { ExpandedPlannedIncome } from '../../types/incomes';
 
 type Props = {
@@ -9,6 +9,7 @@ type Props = {
   onDelete: (plannedId: string) => void;
   onToggleActive: (plannedId: string, isActive: boolean) => void;
   onEditFromDate: (plannedId: string, fromDate: string, newAmount: string) => void;
+  onEditSpecificDate: (plannedId: string, specificDate: string, newAmount: string) => void;
 };
 
 // Mock exchange rates from ARS
@@ -47,8 +48,17 @@ export const PlannedIncomesTable: React.FC<Props> = ({
   onEdit, 
   onDelete, 
   onToggleActive, 
-  onEditFromDate 
+  onEditFromDate,
+  onEditSpecificDate
 }) => {
+  const [editingAmount, setEditingAmount] = useState<{
+    plannedId: string;
+    date: string;
+    currentAmount: string;
+    currency: string;
+    newAmount: string;
+  } | null>(null);
+
   const convertFromARS = (amountARS: number, toCurrency: string): number => {
     const rate = MOCK_RATES_FROM_ARS[toCurrency as keyof typeof MOCK_RATES_FROM_ARS] || 1;
     return amountARS * rate;
@@ -85,25 +95,29 @@ export const PlannedIncomesTable: React.FC<Props> = ({
   };
 
   const handleAmountEdit = (plannedId: string, currentAmount: string, currency: string, date: string) => {
-    const newAmount = prompt(
-      `Nuevo monto para ${currency}:`, 
-      currentAmount
-    );
-    
-    if (newAmount && parseFloat(newAmount) > 0) {
-      const applyFromDate = window.confirm(
-        `¿Aplicar este cambio desde ${formatDate(date)} en adelante?\n\n` +
-        `SÍ: Cambia este y todos los futuros\n` +
-        `NO: Solo cambia esta fecha específica`
-      );
-      
-      if (applyFromDate) {
-        onEditFromDate(plannedId, date, newAmount);
-      } else {
-        // Para cambios específicos de fecha, necesitaríamos otra función
-        alert('Funcionalidad de cambio específico por fecha pendiente de implementar');
-      }
+    setEditingAmount({
+      plannedId,
+      date,
+      currentAmount,
+      currency,
+      newAmount: currentAmount
+    });
+  };
+
+  const handleSaveAmount = (type: 'specific' | 'fromDate') => {
+    if (!editingAmount || !editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0) return;
+
+    if (type === 'fromDate') {
+      onEditFromDate(editingAmount.plannedId, editingAmount.date, editingAmount.newAmount);
+    } else {
+      onEditSpecificDate(editingAmount.plannedId, editingAmount.date, editingAmount.newAmount);
     }
+
+    setEditingAmount(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingAmount(null);
   };
 
   if (sortedPlanned.length === 0) {
@@ -248,6 +262,79 @@ export const PlannedIncomesTable: React.FC<Props> = ({
           </div>
         </div>
       </div>
+
+      {/* Modal de edición de monto */}
+      {editingAmount && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                Editar monto
+              </h3>
+              <button
+                onClick={handleCancelEdit}
+                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Fecha:</div>
+                <div className="font-medium text-gray-900 dark:text-gray-100">{formatDate(editingAmount.date)}</div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Nuevo monto ({editingAmount.currency})
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  value={editingAmount.newAmount}
+                  onChange={(e) => setEditingAmount(prev => prev ? {...prev, newAmount: e.target.value} : null)}
+                  className="input-field w-full"
+                  placeholder="0.00"
+                  autoFocus
+                />
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="text-sm text-blue-800 dark:text-blue-200">
+                  <div className="font-medium mb-2">¿Cómo aplicar este cambio?</div>
+                  <div className="space-y-1 text-xs">
+                    <div>• <strong>Solo esta fecha:</strong> Cambio temporal (ej: horas extras)</div>
+                    <div>• <strong>Esta fecha y siguientes:</strong> Cambio permanente (ej: aumento de salario)</div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={handleCancelEdit}
+                  className="btn-secondary flex-1"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => handleSaveAmount('specific')}
+                  className="btn-secondary flex-1"
+                  disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
+                >
+                  Solo esta fecha
+                </button>
+                <button
+                  onClick={() => handleSaveAmount('fromDate')}
+                  className="btn-primary flex-1"
+                  disabled={!editingAmount.newAmount || parseFloat(editingAmount.newAmount) <= 0}
+                >
+                  Esta y siguientes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

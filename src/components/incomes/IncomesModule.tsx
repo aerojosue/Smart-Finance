@@ -224,6 +224,24 @@ export const IncomesModule: React.FC = () => {
     }
   };
 
+  const handleEditSpecificDate = async (plannedId: string, specificDate: string, newAmount: string) => {
+    try {
+      // En una implementación real, esto crearía una excepción específica para esa fecha
+      // Por ahora, simulamos que se guarda como una nota o excepción
+      showToast(`Monto actualizado solo para ${formatDate(specificDate)} (funcionalidad simulada)`, 'success');
+    } catch (error) {
+      showToast('Error al actualizar el monto específico', 'error');
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
   const handleCloseModal = () => {
     setModalOpen(false);
     setEditingIncome(null);
@@ -406,6 +424,7 @@ export const IncomesModule: React.FC = () => {
           onDelete={handleDeleteIncome}
           onToggleActive={handleToggleActive}
           onEditFromDate={handleEditFromDate}
+          onEditSpecificDate={handleEditSpecificDate}
         />
       </section>
 
