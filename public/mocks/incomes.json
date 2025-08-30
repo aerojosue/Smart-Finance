@@ -7,6 +7,7 @@
       "currency": "ARS",
       "amount": "1250000.00",
       "confidence": "high",
+      "is_active": true,
       "recurrence": {
         "type": "monthly",
         "day_rule": "last_business_day"
@@ -23,6 +24,7 @@
       "currency": "USD",
       "amount": null,
       "confidence": "medium",
+      "is_active": true,
       "recurrence": {
         "type": "monthly",
         "day_rule": "next_business_day",
@@ -43,6 +45,7 @@
       "currency": "BRL",
       "amount": "1500.00",
       "confidence": "high",
+      "is_active": true,
       "recurrence": {
         "type": "monthly",
         "day_rule": "fixed_day",
@@ -60,6 +63,7 @@
       "currency": "ARS",
       "amount": "2500000.00",
       "confidence": "medium",
+      "is_active": false,
       "recurrence": null,
       "variable_band": null,
       "notes": "Aguinaldo diciembre",

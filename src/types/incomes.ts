@@ -5,6 +5,7 @@ export interface PlannedIncome {
   currency: string;
   amount: string | null; // null if variable_band is used
   confidence: 'high' | 'medium' | 'low';
+  is_active: boolean;
   recurrence: {
     type: 'monthly' | 'one_time';
     day_rule: 'fixed_day' | 'last_business_day' | 'next_business_day';
@@ -37,6 +38,7 @@ export interface PlannedIncomeFormData {
   currency: string;
   amount: string;
   confidence: 'high' | 'medium' | 'low';
+  is_active: boolean;
   recurrence_type: 'monthly' | 'one_time';
   day_rule: 'fixed_day' | 'last_business_day' | 'next_business_day';
   anchor_day: number;

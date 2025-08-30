@@ -137,7 +137,9 @@ export function expandPlanned(
   const fromDate = new Date(fromISO);
   const toDate = new Date(toISO);
   
-  return planned.flatMap(p => expandMonthly(p, fromDate, toDate));
+  return planned
+    .filter(p => p.is_active)
+    .flatMap(p => expandMonthly(p, fromDate, toDate));
 }
 
 export function monthlyAggregate(

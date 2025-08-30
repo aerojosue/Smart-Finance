@@ -44,6 +44,7 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
     currency: 'ARS',
     amount: '',
     confidence: 'high',
+    is_active: true,
     recurrence_type: 'monthly',
     day_rule: 'last_business_day',
     anchor_day: 1,
@@ -63,6 +64,7 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
         currency: initial.currency,
         amount: initial.amount || '',
         confidence: initial.confidence,
+        is_active: initial.is_active,
         recurrence_type: initial.recurrence?.type || 'one_time',
         day_rule: initial.recurrence?.day_rule || 'fixed_day',
         anchor_day: initial.recurrence?.anchor_day || 1,
@@ -78,6 +80,7 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
         currency: 'ARS',
         amount: '',
         confidence: 'high',
+        is_active: true,
         recurrence_type: 'monthly',
         day_rule: 'last_business_day',
         anchor_day: 1,
@@ -152,7 +155,7 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información básica */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Fuente del ingreso *
@@ -314,6 +317,28 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Estado
+              </label>
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.is_active}
+                    onChange={(e) => setFormData(prev => ({ ...prev, is_active: e.target.checked }))}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Activo
+                  </span>
+                </label>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                Los ingresos inactivos no aparecen en proyecciones
+              </p>
             </div>
 
             {formData.recurrence_type === 'monthly' && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Edit, Trash2, AlertCircle, Info } from 'lucide-react';
+import { Calendar, Edit, Trash2, AlertCircle, Info, ToggleLeft, ToggleRight } from 'lucide-react';
 import type { ExpandedPlannedIncome } from '../../types/incomes';
 
 type Props = {
@@ -7,6 +7,8 @@ type Props = {
   displayCurrency: string;
   onEdit: (plannedId: string) => void;
   onDelete: (plannedId: string) => void;
+  onToggleActive: (plannedId: string, isActive: boolean) => void;
+  onEditFromDate: (plannedId: string, fromDate: string, newAmount: string) => void;
 };
 
 // Mock exchange rates from ARS
@@ -39,7 +41,14 @@ const categoryLabels = {
   other: 'Otro',
 };
 
-export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCurrency, onEdit, onDelete }) => {
+export const PlannedIncomesTable: React.FC<Props> = ({ 
+  plannedIncomes, 
+  displayCurrency, 
+  onEdit, 
+  onDelete, 
+  onToggleActive, 
+  onEditFromDate 
+}) => {
   const convertFromARS = (amountARS: number, toCurrency: string): number => {
     const rate = MOCK_RATES_FROM_ARS[toCurrency as keyof typeof MOCK_RATES_FROM_ARS] || 1;
     return amountARS * rate;
@@ -73,6 +82,28 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCu
     planned: sortedPlanned.reduce((sum, income) => sum + income.amount_ars, 0),
     observed: 0, // This component only shows planned incomes
     variance: 0  // Will be calculated when we have observed data
+  };
+
+  const handleAmountEdit = (plannedId: string, currentAmount: string, currency: string, date: string) => {
+    const newAmount = prompt(
+      `Nuevo monto para ${currency}:`, 
+      currentAmount
+    );
+    
+    if (newAmount && parseFloat(newAmount) > 0) {
+      const applyFromDate = window.confirm(
+        `¿Aplicar este cambio desde ${formatDate(date)} en adelante?\n\n` +
+        `SÍ: Cambia este y todos los futuros\n` +
+        `NO: Solo cambia esta fecha específica`
+      );
+      
+      if (applyFromDate) {
+        onEditFromDate(plannedId, date, newAmount);
+      } else {
+        // Para cambios específicos de fecha, necesitaríamos otra función
+        alert('Funcionalidad de cambio específico por fecha pendiente de implementar');
+      }
+    }
   };
 
   if (sortedPlanned.length === 0) {
@@ -139,7 +170,9 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCu
                     </div>
                   </div>
                 </td>
-                <td className="text-right py-3 px-2">
+                <td className="text-right py-3 px-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" 
+                    onClick={() => handleAmountEdit(income.planned_id, income.amount_original.toString(), income.currency, income.date)}
+                    title="Click para editar monto">
                   <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     {formatCurrency(income.amount_original, income.currency)}
                   </div>

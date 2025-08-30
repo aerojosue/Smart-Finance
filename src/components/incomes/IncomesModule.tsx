@@ -91,6 +91,7 @@ export const IncomesModule: React.FC = () => {
         currency: data.currency,
         amount: data.use_variable_band ? null : data.amount,
         confidence: data.confidence,
+        is_active: data.is_active,
         recurrence: data.recurrence_type === 'one_time' ? null : {
           type: data.recurrence_type,
           day_rule: data.day_rule,
@@ -124,6 +125,7 @@ export const IncomesModule: React.FC = () => {
         currency: data.currency,
         amount: data.use_variable_band ? null : data.amount,
         confidence: data.confidence,
+        is_active: data.is_active,
         recurrence: data.recurrence_type === 'one_time' ? null : {
           type: data.recurrence_type,
           day_rule: data.day_rule,
@@ -177,18 +179,45 @@ export const IncomesModule: React.FC = () => {
     }
   };
 
+  const handleToggleActive = async (plannedId: string, isActive: boolean) => {
+    try {
+      const updatedIncome = await updatePlannedIncome(plannedId, { is_active: isActive });
+      setPlannedIncomes(prev => prev.map(income => 
+        income.id === plannedId ? updatedIncome : income
+      ));
+      showToast(`Ingreso ${isActive ? 'activado' : 'desactivado'} exitosamente`, 'success');
+    } catch (error) {
+      showToast('Error al cambiar el estado', 'error');
+    }
+  };
+
+  const handleEditFromDate = async (plannedId: string, fromDate: string, newAmount: string) => {
+    try {
+      const updatedIncome = await updatePlannedIncome(plannedId, { 
+        amount: newAmount,
+        updated_at: new Date().toISOString()
+      });
+      setPlannedIncomes(prev => prev.map(income => 
+        income.id === plannedId ? updatedIncome : income
+      ));
+      showToast('Monto actualizado desde la fecha especificada', 'success');
+    } catch (error) {
+      showToast('Error al actualizar el monto', 'error');
+    }
+  };
+
   const handleCloseModal = () => {
     setModalOpen(false);
     setEditingIncome(null);
   };
 
   // Get expanded planned for next 90 days
-  const next12Months = new Date();
-  next12Months.setMonth(next12Months.getMonth() + 12);
+  const next3Months = new Date();
+  next3Months.setMonth(next3Months.getMonth() + 3);
   const expandedNext90 = expandPlanned(
     plannedIncomes,
     new Date().toISOString().split('T')[0],
-    next12Months.toISOString().split('T')[0]
+    next3Months.toISOString().split('T')[0]
   );
 
   // Apply filters
@@ -200,6 +229,10 @@ export const IncomesModule: React.FC = () => {
 
   const allCurrencies = [...new Set(plannedIncomes.map(i => i.currency))].sort();
   const allCategories = [...new Set(plannedIncomes.map(i => i.category))].sort();
+
+  // Separate active and inactive incomes
+  const activeIncomes = plannedIncomes.filter(i => i.is_active);
+  const inactiveIncomes = plannedIncomes.filter(i => !i.is_active);
 
   if (loading) {
     return (
@@ -342,7 +375,7 @@ export const IncomesModule: React.FC = () => {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            Todos los ingresos planificados
+            Ingresos planificados (próximos 3 meses)
           </h2>
           <div className="text-sm text-gray-600 dark:text-gray-400">
             Equivalencias en {displayCurrency}
@@ -353,8 +386,63 @@ export const IncomesModule: React.FC = () => {
           displayCurrency={displayCurrency}
           onEdit={handleEditIncome}
           onDelete={handleDeleteIncome}
+          onToggleActive={handleToggleActive}
+          onEditFromDate={handleEditFromDate}
         />
       </section>
+
+      {/* Ingresos inactivos */}
+      {inactiveIncomes.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              Ingresos inactivos
+            </h2>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {inactiveIncomes.length} ingresos desactivados
+            </div>
+          </div>
+          <div className="card p-6">
+            <div className="space-y-3">
+              {inactiveIncomes.map(income => (
+                <div key={income.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-gray-100">{income.source}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        {categoryLabels[income.category as keyof typeof categoryLabels]} · {income.currency}
+                        {income.amount && ` · ${formatCurrency(parseFloat(income.amount), income.currency)}`}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleToggleActive(income.id, true)}
+                      className="btn-secondary text-sm flex items-center gap-1"
+                    >
+                      <ToggleRight className="w-3 h-3" />
+                      Reactivar
+                    </button>
+                    <button
+                      onClick={() => handleEditIncome(income.id)}
+                      className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      <Edit className="w-3 h-3" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteIncome(income.id)}
+                      className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Modal */}
       <PlannedIncomeFormModal
