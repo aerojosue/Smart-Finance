@@ -9,7 +9,6 @@ import { DarkModeToggle } from "../components/DarkModeToggle";
 import { Navigation } from "../components/Navigation";
 import { AccountsModule } from "../components/accounts/AccountsModule";
 import { CardsModule } from "../components/cards/CardsModule";
-import { CardsModule } from "../components/cards/CardsModule";
 
 export default function Dashboard() {
   const [dash, setDash] = useState<any>(null);
