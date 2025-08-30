@@ -53,6 +53,13 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, o
   // Sort by date
   const sortedPlanned = uniquePlanned.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+  // Calculate totals
+  const totals = {
+    planned: sortedPlanned.reduce((sum, income) => sum + income.amount_ars, 0),
+    observed: 0, // This component only shows planned incomes
+    variance: 0  // Will be calculated when we have observed data
+  };
+
   if (sortedPlanned.length === 0) {
     return (
       <div className="card p-6">
@@ -173,13 +180,13 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, o
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
             <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-              ARS {formatCurrency(totals.planned)}
+              ARS {new Intl.NumberFormat('es-AR').format(totals.planned)}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Total planificado</div>
           </div>
           <div>
             <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-              ARS {formatCurrency(totals.observed)}
+              ARS {new Intl.NumberFormat('es-AR').format(totals.observed)}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Total observado</div>
           </div>
@@ -187,7 +194,7 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, onEdit, o
             <div className={`text-lg font-bold ${
               totals.variance >= 0 ? 'text-green-600' : 'text-red-600'
             }`}>
-              ARS {formatCurrency(totals.variance)}
+              ARS {new Intl.NumberFormat('es-AR').format(totals.variance)}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Diferencia</div>
           </div>
