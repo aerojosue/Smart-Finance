@@ -129,7 +129,7 @@ export const PlannedIncomesTable: React.FC<Props> = ({ plannedIncomes, displayCu
                     </span>
                   </div>
                 </td>
-                    ≈ {displayCurrency} {new Intl.NumberFormat('es-AR').format(Math.round(convertFromARS(income.amount_ars, displayCurrency)))}
+                <td className="py-3 px-2">
                   <div>
                     <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                       {income.source}
