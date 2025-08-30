@@ -110,7 +110,7 @@ export const SavingGoalList: React.FC<Props> = ({ goals, onEdit, onDelete, onCon
         </div>
         <div className="card p-4 text-center">
           <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            {Object.keys(totalTargetByurrency).length}
+            {Object.keys(totalTargetByCurrency).length}
           </div>
           <div className="text-sm text-gray-600 dark:text-gray-400">Monedas</div>
         </div>
