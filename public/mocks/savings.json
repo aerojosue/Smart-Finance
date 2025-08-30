@@ -1,0 +1,60 @@
+{
+  "goals": [
+    {
+      "id": "goal_viaje_brasil",
+      "name": "Viaje Brasil",
+      "description": "Vacaciones familiares en Río de Janeiro",
+      "base_currency": "USD",
+      "target_amount": "3000.00",
+      "current_amount": "850.00",
+      "priority": "high",
+      "due_date": "2025-12-15",
+      "color": "#10b981",
+      "category": "travel",
+      "created_at": "2025-08-01T10:00:00Z",
+      "updated_at": "2025-08-20T15:30:00Z"
+    },
+    {
+      "id": "goal_bicicleta",
+      "name": "Bicicleta nueva",
+      "description": "Mountain bike para ejercicio",
+      "base_currency": "ARS",
+      "target_amount": "800000.00",
+      "current_amount": "320000.00",
+      "priority": "medium",
+      "due_date": "2025-11-30",
+      "color": "#3b82f6",
+      "category": "health",
+      "created_at": "2025-08-05T09:00:00Z",
+      "updated_at": "2025-08-18T12:00:00Z"
+    },
+    {
+      "id": "goal_emergencia",
+      "name": "Fondo de emergencia",
+      "description": "6 meses de gastos básicos",
+      "base_currency": "USD",
+      "target_amount": "5000.00",
+      "current_amount": "1200.00",
+      "priority": "high",
+      "due_date": null,
+      "color": "#ef4444",
+      "category": "emergency",
+      "created_at": "2025-07-15T08:00:00Z",
+      "updated_at": "2025-08-22T10:00:00Z"
+    },
+    {
+      "id": "goal_laptop",
+      "name": "Laptop trabajo",
+      "description": "MacBook Pro para desarrollo",
+      "base_currency": "USD",
+      "target_amount": "2500.00",
+      "current_amount": "600.00",
+      "priority": "low",
+      "due_date": "2026-03-01",
+      "color": "#8b5cf6",
+      "category": "work",
+      "created_at": "2025-08-10T14:00:00Z",
+      "updated_at": "2025-08-25T16:00:00Z"
+    }
+  ]
+}
