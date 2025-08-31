@@ -429,8 +429,8 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
                   type="button"
                   className="btn-primary flex-1"
                   onClick={() => {
-                    if (validateForm() && props.onSubmitAll) {
-                      props.onSubmitAll(formData);
+                    if (validateForm() && onSubmitAll) {
+                      onSubmitAll(formData);
                     }
                   }}
                 >
