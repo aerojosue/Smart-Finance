@@ -38,7 +38,7 @@ const dayRules = [
 
 const availableCurrencies = ['ARS', 'BRL', 'USD', 'USDT', 'EUR'];
 
-export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmit, onClose }) => {
+export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmit, onSubmitAll, onClose }) => {
   const [formData, setFormData] = useState<PlannedIncomeFormData>({
     source: '',
     category: 'salary',
