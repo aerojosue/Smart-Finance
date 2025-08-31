@@ -6,6 +6,7 @@ type Props = {
   open: boolean;
   initial?: PlannedIncome | null;
   onSubmit: (data: PlannedIncomeFormData) => void;
+  onSubmitAll?: (data: PlannedIncomeFormData) => void; // Nuevo prop
   onClose: () => void;
 };
 
@@ -416,12 +417,34 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
             >
               Cancelar
             </button>
-            <button
-              type="submit"
-              className="btn-primary flex-1"
-            >
-              {initial ? 'Actualizar ingreso' : 'Crear ingreso'}
-            </button>
+            {initial ? (
+              <>
+                <button
+                  type="submit"
+                  className="btn-primary flex-1"
+                >
+                  Actualizar ingreso
+                </button>
+                <button
+                  type="button"
+                  className="btn-primary flex-1"
+                  onClick={() => {
+                    if (validateForm() && props.onSubmitAll) {
+                      props.onSubmitAll(formData);
+                    }
+                  }}
+                >
+                  Actualizar este y los siguientes
+                </button>
+              </>
+            ) : (
+              <button
+                type="submit"
+                className="btn-primary flex-1"
+              >
+                Crear ingreso
+              </button>
+            )}
           </div>
         </form>
       </div>
