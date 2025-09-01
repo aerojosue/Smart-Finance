@@ -333,7 +333,6 @@ export const PlannedIncomesTable: React.FC<Props> = ({
                   Esta y siguientes
                 </button>
               </div>
-                  type="button"
             </div>
           </div>
         </div>
