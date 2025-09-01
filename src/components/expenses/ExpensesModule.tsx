@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Plus, ShoppingCart, BarChart3 } from 'lucide-react';
 import { ExpenseKpiHeader } from './ExpenseKpiHeader';
 import { ExpensePlanVsReal } from './ExpensePlanVsReal';
+import { ExpenseCategoryChart } from './ExpenseCategoryChart';
+import { ExpenseTrendChart } from './ExpenseTrendChart';
 import { ExpensePlannedList } from './ExpensePlannedList';
 import { ExpenseInstallmentsPanel } from './ExpenseInstallmentsPanel';
 import { ExpenseFormModal } from './ExpenseFormModal';
@@ -42,6 +44,8 @@ export const ExpensesModule: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [kpis, setKpis] = useState<ExpenseKpis | null>(null);
   const [comparison, setComparison] = useState<ExpenseComparison[]>([]);
+  const [categoryData, setCategoryData] = useState<any[]>([]);
+  const [trendData, setTrendData] = useState<any[]>([]);
   const [selectedExpense, setSelectedExpense] = useState<PlannedExpense | null>(null);
   const [installments, setInstallments] = useState<ExpenseInstallment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,9 +88,47 @@ export const ExpensesModule: React.FC = () => {
     const kpisData = computeExpenseKpis(observedExpenses);
     const currentMonth = new Date().toISOString().substring(0, 7);
     const comparisonData = generateExpenseComparison(plannedExpenses, observedExpenses, currentMonth);
+    
+    // Calculate category data for pie chart
+    const categoryTotals = observedExpenses
+      .filter(e => e.date.startsWith(currentMonth))
+      .reduce((acc, expense) => {
+        acc[expense.category] = (acc[expense.category] || 0) + parseFloat(expense.amount_ars);
+        return acc;
+      }, {} as Record<string, number>);
+
+    const totalAmount = Object.values(categoryTotals).reduce((sum, amount) => sum + amount, 0);
+    const categoryChartData = Object.entries(categoryTotals).map(([category, amount]) => ({
+      category,
+      amount_ars: amount,
+      percentage: totalAmount > 0 ? (amount / totalAmount) * 100 : 0,
+      color: '#3b82f6' // Will be overridden by chart component
+    }));
+
+    // Generate trend data (mock for last 6 months)
+    const trendMockData = [];
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      const month = date.toISOString().substring(0, 7);
+      
+      // Mock data based on current month
+      const baseAmount = 800000 + (Math.random() * 200000);
+      trendMockData.push({
+        month,
+        planned_ars: baseAmount,
+        observed_ars: baseAmount * (0.9 + Math.random() * 0.2),
+        variance_ars: 0
+      });
+    }
+    trendMockData.forEach(item => {
+      item.variance_ars = item.observed_ars - item.planned_ars;
+    });
 
     setKpis(kpisData);
     setComparison(comparisonData);
+    setCategoryData(categoryChartData);
+    setTrendData(trendMockData);
   };
 
   const showToast = (message: string, type: 'success' | 'error') => {
@@ -279,6 +321,25 @@ export const ExpensesModule: React.FC = () => {
           displayCurrency={displayCurrency}
         />
       </section>
+
+      {/* Gráficos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Gráfico de categorías */}
+        <section className="card p-6">
+          <ExpenseCategoryChart 
+            data={categoryData} 
+            displayCurrency={displayCurrency}
+          />
+        </section>
+
+        {/* Tendencia */}
+        <section className="card p-6">
+          <ExpenseTrendChart 
+            historical={trendData} 
+            displayCurrency={displayCurrency}
+          />
+        </section>
+      </div>
 
       {/* Layout principal */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

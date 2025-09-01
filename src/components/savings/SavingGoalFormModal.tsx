@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Target, Calendar, AlertTriangle } from 'lucide-react';
+import { CategorySelector } from '../categories/CategorySelector';
 import type { SavingGoal, SavingGoalFormData } from '../../types/savings';
 
 type Props = {
@@ -13,16 +14,6 @@ const priorities = [
   { value: 'high', label: 'Alta', description: 'Urgente o muy importante' },
   { value: 'medium', label: 'Media', description: 'Importante pero no urgente' },
   { value: 'low', label: 'Baja', description: 'Deseable a largo plazo' },
-];
-
-const categories = [
-  { value: 'travel', label: 'Viajes', icon: '✈️' },
-  { value: 'health', label: 'Salud', icon: '🏃' },
-  { value: 'emergency', label: 'Emergencia', icon: '🚨' },
-  { value: 'work', label: 'Trabajo', icon: '💼' },
-  { value: 'education', label: 'Educación', icon: '📚' },
-  { value: 'home', label: 'Hogar', icon: '🏠' },
-  { value: 'other', label: 'Otro', icon: '🎯' },
 ];
 
 const availableCurrencies = ['ARS', 'BRL', 'USD', 'USDT', 'EUR'];
@@ -40,7 +31,7 @@ export const SavingGoalFormModal: React.FC<Props> = ({ open, initial, onSubmit, 
     priority: 'medium',
     due_date: '',
     color: '#3b82f6',
-    category: 'other',
+    category: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -66,7 +57,7 @@ export const SavingGoalFormModal: React.FC<Props> = ({ open, initial, onSubmit, 
         priority: 'medium',
         due_date: '',
         color: '#3b82f6',
-        category: 'other',
+       category: '',
       });
     }
     setErrors({});
@@ -74,6 +65,10 @@ export const SavingGoalFormModal: React.FC<Props> = ({ open, initial, onSubmit, 
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
+
+    if (!formData.category) {
+      newErrors.category = 'Selecciona una categoría';
+    }
 
     if (!formData.name.trim()) {
       newErrors.name = 'El nombre es obligatorio';
@@ -226,23 +221,13 @@ export const SavingGoalFormModal: React.FC<Props> = ({ open, initial, onSubmit, 
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Categoría
               </label>
-              <div className="grid grid-cols-2 gap-2">
-                {categories.map(category => (
-                  <button
-                    key={category.value}
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, category: category.value as any }))}
-                    className={`flex items-center gap-2 p-3 rounded-lg border transition-all ${
-                      formData.category === category.value
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                        : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    <span className="text-lg">{category.icon}</span>
-                    <span className="text-sm font-medium">{category.label}</span>
-                  </button>
-                ))}
-              </div>
+              <CategorySelector
+                type="saving"
+                value={formData.category}
+                onChange={(categoryId) => setFormData(prev => ({ ...prev, category: categoryId }))}
+                placeholder="Seleccionar categoría..."
+              />
+              {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category}</p>}
             </div>
 
             <div>

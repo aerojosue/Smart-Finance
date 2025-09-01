@@ -1,0 +1,144 @@
+{
+  "categories": [
+    {
+      "id": "cat_food",
+      "name": "Comida",
+      "icon": "restaurant",
+      "type": "expense",
+      "color": "#10b981",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_transport",
+      "name": "Transporte",
+      "icon": "directions_car",
+      "type": "expense",
+      "color": "#3b82f6",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_entertainment",
+      "name": "Entretenimiento",
+      "icon": "movie",
+      "type": "expense",
+      "color": "#8b5cf6",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_health",
+      "name": "Salud",
+      "icon": "local_hospital",
+      "type": "expense",
+      "color": "#ef4444",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_shopping",
+      "name": "Compras",
+      "icon": "shopping_cart",
+      "type": "expense",
+      "color": "#f59e0b",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_bills",
+      "name": "Servicios",
+      "icon": "receipt",
+      "type": "expense",
+      "color": "#06b6d4",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_other_exp",
+      "name": "Otros",
+      "icon": "more_horiz",
+      "type": "expense",
+      "color": "#6b7280",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_travel",
+      "name": "Viajes",
+      "icon": "flight_takeoff",
+      "type": "saving",
+      "color": "#10b981",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_health_sav",
+      "name": "Salud",
+      "icon": "favorite",
+      "type": "saving",
+      "color": "#ef4444",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_emergency",
+      "name": "Emergencia",
+      "icon": "emergency",
+      "type": "saving",
+      "color": "#f59e0b",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_work",
+      "name": "Trabajo",
+      "icon": "laptop",
+      "type": "saving",
+      "color": "#8b5cf6",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_education",
+      "name": "Educación",
+      "icon": "school",
+      "type": "saving",
+      "color": "#3b82f6",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_home",
+      "name": "Hogar",
+      "icon": "house",
+      "type": "saving",
+      "color": "#06b6d4",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "cat_other_sav",
+      "name": "Otros",
+      "icon": "savings",
+      "type": "saving",
+      "color": "#6b7280",
+      "is_default": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  ]
+}

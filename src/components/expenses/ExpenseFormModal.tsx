@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, ShoppingCart, CreditCard, Wallet, Calendar, Info } from 'lucide-react';
 import { getCards } from '../../lib/cardsApi';
+import { CategorySelector } from '../categories/CategorySelector';
 import type { PlannedExpense, ExpenseFormData } from '../../types/expenses';
 import type { Card } from '../../types/cards';
 
@@ -10,16 +11,6 @@ type Props = {
   onSubmit: (data: ExpenseFormData) => void;
   onClose: () => void;
 };
-
-const categories = [
-  { value: 'food', label: 'Comida', icon: '🍽️' },
-  { value: 'transport', label: 'Transporte', icon: '🚗' },
-  { value: 'entertainment', label: 'Entretenimiento', icon: '🎬' },
-  { value: 'health', label: 'Salud', icon: '🏥' },
-  { value: 'shopping', label: 'Compras', icon: '🛍️' },
-  { value: 'bills', label: 'Servicios', icon: '📄' },
-  { value: 'other', label: 'Otros', icon: '💰' },
-];
 
 const kindOptions = [
   { value: 'debit', label: 'Débito', description: 'Pago inmediato' },
@@ -42,7 +33,7 @@ export const ExpenseFormModal: React.FC<Props> = ({ open, initial, onSubmit, onC
   const [formData, setFormData] = useState<ExpenseFormData>({
     kind: 'debit',
     card_id: '',
-    category: 'food',
+    category: '',
     currency: 'ARS',
     amount: '',
     concept: '',
@@ -80,7 +71,7 @@ export const ExpenseFormModal: React.FC<Props> = ({ open, initial, onSubmit, onC
       setFormData({
         kind: 'debit',
         card_id: '',
-        category: 'food',
+        category: '',
         currency: 'ARS',
         amount: '',
         concept: '',
@@ -125,6 +116,10 @@ export const ExpenseFormModal: React.FC<Props> = ({ open, initial, onSubmit, onC
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
+    if (!formData.category) {
+      newErrors.category = 'Selecciona una categoría';
+    }
+
     if (!formData.amount || parseFloat(formData.amount) <= 0) {
       newErrors.amount = 'El monto debe ser mayor a 0';
     }
@@ -162,9 +157,10 @@ export const ExpenseFormModal: React.FC<Props> = ({ open, initial, onSubmit, onC
     }));
   };
 
-  const availableCards = cards.filter(card => 
-    card.type === 'credit' && card.currencies.includes(formData.currency)
-  );
+  const availableCards = cards.filter(card => {
+    // Solo tarjetas de crédito que soporten la moneda seleccionada
+    return card.type === 'credit' && card.currencies.includes(formData.currency);
+  });
 
   if (!open) return null;
 
@@ -245,17 +241,13 @@ export const ExpenseFormModal: React.FC<Props> = ({ open, initial, onSubmit, onC
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Categoría
               </label>
-              <select
+              <CategorySelector
+                type="expense"
                 value={formData.category}
-                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as any }))}
-                className="select-field w-full"
-              >
-                {categories.map(category => (
-                  <option key={category.value} value={category.value}>
-                    {category.icon} {category.label}
-                  </option>
-                ))}
-              </select>
+                onChange={(categoryId) => setFormData(prev => ({ ...prev, category: categoryId }))}
+                placeholder="Seleccionar categoría..."
+              />
+              {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category}</p>}
             </div>
 
             <div>
