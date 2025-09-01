@@ -417,32 +417,23 @@ export const PlannedIncomeFormModal: React.FC<Props> = ({ open, initial, onSubmi
             >
               Cancelar
             </button>
-            {initial ? (
-              <>
-                <button
-                  type="submit"
-                  className="btn-primary flex-1"
-                >
-                  Actualizar ingreso
-                </button>
-                <button
-                  type="button"
-                  className="btn-primary flex-1"
-                  onClick={() => {
-                    if (validateForm() && onSubmitAll) {
-                      onSubmitAll(formData);
-                    }
-                  }}
-                >
-                  Actualizar este y los siguientes
-                </button>
-              </>
-            ) : (
+            <button
+              type="submit"
+              className="btn-primary flex-1"
+            >
+              {initial ? 'Actualizar ingreso' : 'Crear ingreso'}
+            </button>
+            {initial && onSubmitAll && (
               <button
-                type="submit"
+                type="button"
+                onClick={() => {
+                  if (validateForm()) {
+                    onSubmitAll(formData);
+                  }
+                }}
                 className="btn-primary flex-1"
               >
-                Crear ingreso
+                Actualizar este y los siguientes
               </button>
             )}
           </div>

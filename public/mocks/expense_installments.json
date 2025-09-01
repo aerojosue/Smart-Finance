@@ -1,0 +1,45 @@
+{
+  "installments": [
+    {
+      "id": "inst_exp_laptop_1",
+      "planned_expense_id": "exp_laptop_credit",
+      "installment_number": 1,
+      "total_installments": 6,
+      "due_date": "2025-10-10",
+      "status": "warning",
+      "currency": "USD",
+      "amount_base": "200.00",
+      "amount_equiv_est_ars": "200000.00",
+      "deficit": {
+        "currency": "USD",
+        "amount": "50.00"
+      },
+      "suggestions": [
+        {
+          "from_currency": "USDT",
+          "amount_from_est": "52.00",
+          "est_rate": "USDT→USD 0.96",
+          "est_spread_pct": "-0.15",
+          "platform_suggested": "Binance"
+        },
+        {
+          "from_currency": "ARS",
+          "amount_from_est": "50000.00",
+          "est_rate": "ARS→USD 0.001",
+          "platform_suggested": "Manual"
+        }
+      ]
+    },
+    {
+      "id": "inst_exp_gym_1",
+      "planned_expense_id": "exp_gym_credit",
+      "installment_number": 1,
+      "total_installments": 12,
+      "due_date": "2025-09-29",
+      "status": "upcoming",
+      "currency": "BRL",
+      "amount_base": "12.50",
+      "amount_equiv_est_ars": "2500.00"
+    }
+  ]
+}
